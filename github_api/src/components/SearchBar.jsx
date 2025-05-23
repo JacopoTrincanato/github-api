@@ -11,7 +11,7 @@ export default function SearchBar() {
             headers: {
                 "Authorization": `Bearer ${import.meta.env.VITE_API_TOKEN}`,
                 "Accept": "application/vnd.github.v3+json",
-                "X-GitHub-Api-Version": "2025-05-23"
+                "X-GitHub-Api-Version": "2022-11-28"
             }
         })
             .then(response => {
@@ -39,7 +39,7 @@ export default function SearchBar() {
             </form>
 
             <ul>
-                {data.map(repo => (
+                {data && data.map(repo => (
                     <li key={repo.id}>
                         <a href={repo.html_url} target="_blank" rel="noopener noreferrer">
                             {repo.full_name}

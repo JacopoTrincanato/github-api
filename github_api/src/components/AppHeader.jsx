@@ -1,3 +1,5 @@
+import SearchBar from "./SearchBar";
+
 export default function AppHeader() {
 
     return (
@@ -5,7 +7,7 @@ export default function AppHeader() {
             <header>
                 <h1>GitHub Api</h1>
                 <nav>
-
+                    <SearchBar />
                 </nav>
             </header>
         </>

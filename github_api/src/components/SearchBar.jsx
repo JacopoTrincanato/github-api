@@ -1,32 +1,52 @@
-import { useState } from "react"
-import config from "../config";
+import { useState } from "react";
 
 export default function SearchBar() {
-
     const [data, setData] = useState([]);
     const [searchText, setSearchText] = useState("");
 
     function handleFormSubmit(e) {
         e.preventDefault();
 
-        fetch(`${config}&query=${searchText}`)
-            .then(response => response.json())
+        fetch(`https://api.github.com/search/repositories?q=${searchText}`, {
+            headers: {
+                "Authorization": `Bearer ${import.meta.env.VITE_API_TOKEN}`,
+                "Accept": "application/vnd.github.v3+json",
+                "X-GitHub-Api-Version": "2025-05-23"
+            }
+        })
             .then(response => {
-                setData(response)
+                response.json();
             })
-            .catch((error) => console.error(error))
+            .then(response => {
+                setData(response);
+            })
+            .catch((error) => console.error("Errore:", error));
     }
+
+    console.log(data);
+
 
     return (
         <>
             <form onSubmit={handleFormSubmit}>
                 <input
                     type="search"
-                    placeholder="Search..."
+                    placeholder="Cerca su GitHub..."
                     value={searchText}
                     onChange={(e) => setSearchText(e.target.value)}
                 />
+                <button type="submit">Cerca</button>
             </form>
+
+            <ul>
+                {data.map(repo => (
+                    <li key={repo.id}>
+                        <a href={repo.html_url} target="_blank" rel="noopener noreferrer">
+                            {repo.full_name}
+                        </a>
+                    </li>
+                ))}
+            </ul>
         </>
-    )
+    );
 }

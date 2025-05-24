@@ -1,4 +1,5 @@
 import { useState } from "react";
+import AppLoader from "../loaders/AppLoader";
 
 export default function SearchBar() {
     const [data, setData] = useState([]);
@@ -6,6 +7,7 @@ export default function SearchBar() {
     const [selectedOption, setSelectedOption] = useState("Repositories");
     const options = ["Repositories", "Users"];
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
 
     function handleFormSubmit(e) {
         e.preventDefault();
@@ -17,6 +19,8 @@ export default function SearchBar() {
             selectedOption === "Users"
                 ? `https://api.github.com/search/users?q=${searchText}`
                 : `https://api.github.com/search/repositories?q=${searchText}`;
+
+        setLoading(true)
 
         fetch(endpoint, {
             headers: {
@@ -39,6 +43,7 @@ export default function SearchBar() {
                 } else {
                     setData(response.items);
                     setError("");
+                    setLoading(false)
                 }
 
             })
@@ -47,48 +52,54 @@ export default function SearchBar() {
 
     return (
         <>
-            <form onSubmit={handleFormSubmit}>
 
-                <input
-                    type="search"
-                    placeholder="Cerca su GitHub..."
-                    value={searchText}
-                    onChange={(e) => setSearchText(e.target.value)}
-                />
+            {loading ? <AppLoader /> :
 
-                <select
-                    id="options"
-                    value={selectedOption}
-                    onChange={(e) => setSelectedOption(e.target.value)}
-                >
-                    {options.map((option, index) => (
-                        <option key={index} value={option}>
-                            {option}
-                        </option>
-                    ))}
-                </select>
+                <div>
+                    <form onSubmit={handleFormSubmit}>
 
-                <button type="submit">Cerca</button>
+                        <input
+                            type="search"
+                            placeholder="Cerca su GitHub..."
+                            value={searchText}
+                            onChange={(e) => setSearchText(e.target.value)}
+                        />
 
-            </form>
+                        <select
+                            id="options"
+                            value={selectedOption}
+                            onChange={(e) => setSelectedOption(e.target.value)}
+                        >
+                            {options.map((option, index) => (
+                                <option key={index} value={option}>
+                                    {option}
+                                </option>
+                            ))}
+                        </select>
 
-            <div>{error}</div>
+                        <button type="submit">Cerca</button>
 
-            <ul>
+                    </form>
 
-                {selectedOption === "Users"
-                    ? data.map((user) => (
-                        <li key={user.id}>{user.login}</li>
-                    ))
-                    : data.map((repo) => (
-                        <li key={repo.id}>
-                            <a href={repo.html_url} target="_blank" rel="noopener noreferrer">
-                                {repo.full_name}
-                            </a>
-                        </li>
-                    ))}
+                    <div>{error}</div>
 
-            </ul>
+                    <ul>
+
+                        {selectedOption === "Users"
+                            ? data.map((user) => (
+                                <li key={user.id}>{user.login}</li>
+                            ))
+                            : data.map((repo) => (
+                                <li key={repo.id}>
+                                    <a href={repo.html_url} target="_blank" rel="noopener noreferrer">
+                                        {repo.full_name}
+                                    </a>
+                                </li>
+                            ))}
+
+                    </ul>
+                </div>}
+
         </>
     );
 }

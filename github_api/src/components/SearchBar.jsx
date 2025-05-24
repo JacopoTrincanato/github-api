@@ -24,32 +24,35 @@ export default function SearchBar() {
 
         setLoading(true)
 
-        fetch(endpoint, {
-            headers: {
-                Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
-                Accept: "application/vnd.github.v3+json",
-                "X-GitHub-Api-Version": "2022-11-28",
-            },
-        })
-            .then((response) => response.json())
-            .then((response) => {
-
-                //validazione minimale
-                if (searchText.length < 3) {
-                    setError("Devi digitare almeno tre caratteri per effettuare la ricerca")
-                }
-
-                if (response.items.length == 0) {
-                    setError("Nessun risultato")
-                    setData([])
-                } else {
-                    setData(response.items);
-                    setError("");
-                    setLoading(false)
-                }
-
+        //validazione minimale
+        if (searchText.length < 3) {
+            setError("Devi digitare almeno tre caratteri per effettuare la ricerca")
+            setLoading(false)
+        } else {
+            fetch(endpoint, {
+                headers: {
+                    Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
+                    Accept: "application/vnd.github.v3+json",
+                    "X-GitHub-Api-Version": "2022-11-28",
+                },
             })
-            .catch((error) => console.error("Errore:", error));
+                .then((response) => response.json())
+                .then((response) => {
+
+
+                    if (response.items.length == 0) {
+                        setError("Nessun risultato")
+                        setData([])
+                    } else {
+                        setData(response.items);
+                        setError("");
+                        setLoading(false)
+                    }
+
+                })
+                .catch((error) => console.error("Errore:", error));
+        }
+
     }
 
     return (

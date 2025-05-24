@@ -9,7 +9,9 @@ export default function SearchBar() {
 
     function handleFormSubmit(e) {
         e.preventDefault();
+    }
 
+    function fetchData() {
         fetch(`https://api.github.com/search/users?q=${searchText}`, {
             headers: {
                 "Authorization": `Bearer ${import.meta.env.VITE_API_TOKEN}`,
@@ -44,10 +46,13 @@ export default function SearchBar() {
 
                 <select id="options">
                     <option value="">
-
+                        Repositories
+                    </option>
+                    <option value="">
+                        Users
                     </option>
                 </select>
-                <button type="submit">Cerca</button>
+                <button onClick={fetchData} type="submit">Cerca</button>
             </form>
 
             {/*<ul>

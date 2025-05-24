@@ -14,11 +14,9 @@ export default function SearchBar() {
                 "X-GitHub-Api-Version": "2022-11-28"
             }
         })
+            .then(response => response.json())
             .then(response => {
-                response.json();
-            })
-            .then(response => {
-                setData(response);
+                setData(response.items);
             })
             .catch((error) => console.error("Errore:", error));
     }

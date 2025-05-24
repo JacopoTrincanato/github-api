@@ -1,5 +1,7 @@
 import { useState } from "react";
 import AppLoader from "../loaders/AppLoader";
+import RepositoryCard from "./RepositoryCard";
+import UserCard from "./UserCard";
 
 export default function SearchBar() {
     const [data, setData] = useState([]);
@@ -86,16 +88,8 @@ export default function SearchBar() {
                     <ul>
 
                         {selectedOption === "Users"
-                            ? data.map((user) => (
-                                <li key={user.id}>{user.login}</li>
-                            ))
-                            : data.map((repo) => (
-                                <li key={repo.id}>
-                                    <a href={repo.html_url} target="_blank" rel="noopener noreferrer">
-                                        {repo.full_name}
-                                    </a>
-                                </li>
-                            ))}
+                            ? <UserCard data={data} />
+                            : <RepositoryCard data={data} />}
 
                     </ul>
                 </div>}

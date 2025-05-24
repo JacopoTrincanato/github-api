@@ -3,6 +3,7 @@ import { useState } from "react";
 export default function SearchBar() {
     const [data, setData] = useState([]);
     const [searchText, setSearchText] = useState("");
+    const options = ["Repositories", "Users"];
 
     //"repository_search_url": "https://api.github.com/search/repositories?q={query}{&page,per_page,sort,order}"
     //"user_organizations_url": "https://api.github.com/user/orgs"
@@ -12,23 +13,44 @@ export default function SearchBar() {
     }
 
     function fetchData() {
-        fetch(`https://api.github.com/search/users?q=${searchText}`, {
-            headers: {
-                "Authorization": `Bearer ${import.meta.env.VITE_API_TOKEN}`,
-                "Accept": "application/vnd.github.v3+json",
-                "X-GitHub-Api-Version": "2022-11-28"
-            }
-        })
-            .then(response => response.json())
-            .then(response => {
-                /*if (searchText.length <= 3) {
-                    alert("Numero di caratteri insufficienti");
-                } else {
-                    setData(response.items);
-                }*/
-                setData(response.items);
+
+        options.map((option) => {
+            option == "Users" ? fetch(`https://api.github.com/search/users?q=${searchText}`, {
+                headers: {
+                    "Authorization": `Bearer ${import.meta.env.VITE_API_TOKEN}`,
+                    "Accept": "application/vnd.github.v3+json",
+                    "X-GitHub-Api-Version": "2022-11-28"
+                }
             })
-            .catch((error) => console.error("Errore:", error));
+                .then(response => response.json())
+                .then(response => {
+                    /*if (searchText.length <= 3) {
+                        alert("Numero di caratteri insufficienti");
+                    } else {
+                        setData(response.items);
+                    }*/
+                    setData(response.items);
+                })
+                .catch((error) => console.error("Errore:", error)) : fetch(`https://api.github.com/search/repositories?q=${searchText}`, {
+                    headers: {
+                        "Authorization": `Bearer ${import.meta.env.VITE_API_TOKEN}`,
+                        "Accept": "application/vnd.github.v3+json",
+                        "X-GitHub-Api-Version": "2022-11-28"
+                    }
+                })
+                    .then(response => response.json())
+                    .then(response => {
+                        /*if (searchText.length <= 3) {
+                            alert("Numero di caratteri insufficienti");
+                        } else {
+                            setData(response.items);
+                        }*/
+                        setData(response.items);
+                    })
+                    .catch((error) => console.error("Errore:", error));
+        })
+
+
     }
 
     console.log(data);
@@ -45,32 +67,34 @@ export default function SearchBar() {
                 />
 
                 <select id="options">
-                    <option value="">
-                        Repositories
-                    </option>
-                    <option value="">
-                        Users
-                    </option>
+
+                    {options.map((option, index) =>
+                        <option key={index} value={option}>
+                            {option}
+                        </option>
+                    )}
+
                 </select>
                 <button onClick={fetchData} type="submit">Cerca</button>
             </form>
 
-            {/*<ul>
-                {data && data.map(repo => (
-                    <li key={repo.id}>
-                        <a href={repo.html_url} target="_blank" rel="noopener noreferrer">
-                            {repo.full_name}
-                        </a>
-                    </li>
-                ))}
-            </ul>*/}
-
             <ul>
-                {data && data.map(user => (
-                    <li key={user.id}>
-                        {user.login}
-                    </li>
-                ))}
+                {options.map((option) => {
+                    option == "Users" ? data && data.map(user => (
+                        <li key={user.id}>
+                            {user.login}
+                        </li>
+                    )) : data && data.map(repo => (
+                        <li key={repo.id}>
+                            <a href={repo.html_url} target="_blank" rel="noopener noreferrer">
+                                {repo.full_name}
+                            </a>
+                        </li>
+                    ))
+                })
+
+                }
+
             </ul>
         </>
     );

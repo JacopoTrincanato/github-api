@@ -3,62 +3,52 @@ import { useState } from "react";
 export default function SearchBar() {
     const [data, setData] = useState([]);
     const [searchText, setSearchText] = useState("");
+    const [selectedOption, setSelectedOption] = useState("Repositories");
     const options = ["Repositories", "Users"];
-
-    //"repository_search_url": "https://api.github.com/search/repositories?q={query}{&page,per_page,sort,order}"
-    //"user_organizations_url": "https://api.github.com/user/orgs"
+    const [error, setError] = useState("");
 
     function handleFormSubmit(e) {
         e.preventDefault();
+        fetchData();
     }
 
     function fetchData() {
+        const endpoint =
+            selectedOption === "Users"
+                ? `https://api.github.com/search/users?q=${searchText}`
+                : `https://api.github.com/search/repositories?q=${searchText}`;
 
-        options.map((option) => {
-            option == "Users" ? fetch(`https://api.github.com/search/users?q=${searchText}`, {
-                headers: {
-                    "Authorization": `Bearer ${import.meta.env.VITE_API_TOKEN}`,
-                    "Accept": "application/vnd.github.v3+json",
-                    "X-GitHub-Api-Version": "2022-11-28"
-                }
-            })
-                .then(response => response.json())
-                .then(response => {
-                    /*if (searchText.length <= 3) {
-                        alert("Numero di caratteri insufficienti");
-                    } else {
-                        setData(response.items);
-                    }*/
-                    setData(response.items);
-                })
-                .catch((error) => console.error("Errore:", error)) : fetch(`https://api.github.com/search/repositories?q=${searchText}`, {
-                    headers: {
-                        "Authorization": `Bearer ${import.meta.env.VITE_API_TOKEN}`,
-                        "Accept": "application/vnd.github.v3+json",
-                        "X-GitHub-Api-Version": "2022-11-28"
-                    }
-                })
-                    .then(response => response.json())
-                    .then(response => {
-                        /*if (searchText.length <= 3) {
-                            alert("Numero di caratteri insufficienti");
-                        } else {
-                            setData(response.items);
-                        }*/
-                        setData(response.items);
-                    })
-                    .catch((error) => console.error("Errore:", error));
+        fetch(endpoint, {
+            headers: {
+                Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
+                Accept: "application/vnd.github.v3+json",
+                "X-GitHub-Api-Version": "2022-11-28",
+            },
         })
+            .then((response) => response.json())
+            .then((response) => {
 
+                //validazione minimale
+                if (searchText.length < 3) {
+                    setError("Devi digitare almeno tre caratteri per effettuare la ricerca")
+                }
 
+                if (response.items.length == 0) {
+                    setError("Nessun risultato")
+                    setData([])
+                } else {
+                    setData(response.items);
+                    setError("");
+                }
+
+            })
+            .catch((error) => console.error("Errore:", error));
     }
-
-    console.log(data);
-
 
     return (
         <>
             <form onSubmit={handleFormSubmit}>
+
                 <input
                     type="search"
                     placeholder="Cerca su GitHub..."
@@ -66,36 +56,40 @@ export default function SearchBar() {
                     onChange={(e) => setSearchText(e.target.value)}
                 />
 
-                <select id="options">
-
-                    {options.map((option, index) =>
+                <select
+                    id="options"
+                    value={selectedOption}
+                    onChange={(e) => setSelectedOption(e.target.value)}
+                >
+                    {options.map((option, index) => (
                         <option key={index} value={option}>
                             {option}
                         </option>
-                    )}
-
+                    ))}
                 </select>
-                <button onClick={fetchData} type="submit">Cerca</button>
+
+                <button type="submit">Cerca</button>
+
             </form>
 
+            <div>{error}</div>
+
             <ul>
-                {options.map((option) => {
-                    option == "Users" ? data && data.map(user => (
-                        <li key={user.id}>
-                            {user.login}
-                        </li>
-                    )) : data && data.map(repo => (
+
+                {selectedOption === "Users"
+                    ? data.map((user) => (
+                        <li key={user.id}>{user.login}</li>
+                    ))
+                    : data.map((repo) => (
                         <li key={repo.id}>
                             <a href={repo.html_url} target="_blank" rel="noopener noreferrer">
                                 {repo.full_name}
                             </a>
                         </li>
-                    ))
-                })
-
-                }
+                    ))}
 
             </ul>
         </>
     );
 }
+

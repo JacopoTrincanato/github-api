@@ -1,10 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import AppLoader from "../loaders/AppLoader";
-import RepositoryCard from "./RepositoryCard";
-import UserCard from "./UserCard";
+import GlobalContext from "../contexts/GlobalContext";
 
 export default function SearchBar() {
-    const [data, setData] = useState([]);
+    const [data, setData] = useContext(GlobalContext);
     const [searchText, setSearchText] = useState("");
     const [selectedOption, setSelectedOption] = useState("Repositories");
     const options = ["Repositories", "Users"];
@@ -43,8 +42,9 @@ export default function SearchBar() {
                     if (response.items.length == 0) {
                         setError("Nessun risultato")
                         setData([])
+                        setLoading(false)
                     } else {
-                        setData(response.items);
+                        setData(response.items)
                         setError("");
                         setLoading(false)
                     }
@@ -54,6 +54,8 @@ export default function SearchBar() {
         }
 
     }
+
+    console.log(data);
 
     return (
         <>
@@ -88,13 +90,6 @@ export default function SearchBar() {
 
                     <div>{error}</div>
 
-                    <ul>
-
-                        {selectedOption === "Users"
-                            ? <UserCard data={data} />
-                            : <RepositoryCard data={data} />}
-
-                    </ul>
                 </div>}
 
         </>

@@ -8,19 +8,13 @@ function App() {
 
   const [data, setData] = useState([]);
 
-  const values = {
-    data,
-    setData
-  }
-
   return (
     <>
-      <GlobalContext.Provider value={[values]}>
-
+      <GlobalContext.Provider value={{ data, setData }}>
+        <DefaultLayout>
+          <AppMain />
+        </DefaultLayout>
       </GlobalContext.Provider>
-      <DefaultLayout>
-        <AppMain />
-      </DefaultLayout>
     </>
   )
 }

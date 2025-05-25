@@ -3,7 +3,7 @@ import AppLoader from "../loaders/AppLoader";
 import GlobalContext from "../contexts/GlobalContext";
 
 export default function SearchBar() {
-    const [data, setData] = useContext(GlobalContext);
+    const { data, setData } = useContext(GlobalContext);
     const [searchText, setSearchText] = useState("");
     const [selectedOption, setSelectedOption] = useState("Repositories");
     const options = ["Repositories", "Users"];

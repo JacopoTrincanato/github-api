@@ -6,7 +6,7 @@ export default function RepositoryCard({ data }) {
                 {data.map((repo) => (
                     <div key={repo.id} className="col">
                         <div className="card h-100 shadow-sm border-0">
-                            <img src={repo.owner.avatar_url} alt="" className="card-img-top img-thumbnail mx-auto mt-3" style={{ width: '100px', height: '100px', objectFit: 'cover', borderRadius: '50%' }} />
+                            <img src={repo.owner?.avatar_url} alt="" className="card-img-top img-thumbnail mx-auto mt-3" style={{ width: '100px', height: '100px', objectFit: 'cover', borderRadius: '50%' }} />
                             <div className="card-body">
                                 <h5 className="card-title">{repo.full_name}</h5>
                                 <p className="card-text">{repo.description}</p>

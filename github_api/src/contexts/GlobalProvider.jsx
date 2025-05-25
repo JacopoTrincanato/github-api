@@ -45,9 +45,6 @@ export default function GlobalProvider({ children }) {
                 .catch((error) => console.error("Errore:", error));
         }
 
-        console.log(data);
-
-
     }
 
     return (

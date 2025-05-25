@@ -14,10 +14,11 @@ export default function SearchBar() {
     return (
         <>
             <div>
-                <form onSubmit={handleFormSubmit}>
 
+                <form onSubmit={handleFormSubmit} className="d-flex flex-column flex-md-row gap-2 align-items-center mb-4">
                     <input
                         type="search"
+                        className="form-control"
                         placeholder="Cerca su GitHub..."
                         value={searchText}
                         onChange={(e) => setSearchText(e.target.value)}
@@ -25,18 +26,16 @@ export default function SearchBar() {
 
                     <select
                         id="options"
+                        className="form-select w-auto"
                         value={selectedOption}
                         onChange={(e) => setSelectedOption(e.target.value)}
                     >
                         {options.map((option, index) => (
-                            <option key={index} value={option}>
-                                {option}
-                            </option>
+                            <option key={index} value={option}>{option}</option>
                         ))}
                     </select>
 
-                    <button type="submit">Cerca</button>
-
+                    <button type="submit" className="btn btn-primary">Cerca</button>
                 </form>
 
             </div>

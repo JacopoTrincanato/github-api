@@ -4,7 +4,7 @@ export default function UserCard({ data }) {
         <>
             {data.map((user) => (
 
-                <div className="card">
+                <div key={user.id} className="card">
                     <img src={user.avatar_url} alt="" />
                     <h2 key={user.id}>{user.login}</h2>
                     <p>{user.type}</p>

@@ -1,20 +1,17 @@
-import { useState } from 'react';
 import './App.css'
 import AppMain from './components/AppMain'
-import GlobalContext from './contexts/GlobalContext'
 import DefaultLayout from './layouts/DefaultLayout'
+import GlobalProvider from './contexts/GlobalProvider';
 
 function App() {
 
-  const [data, setData] = useState([]);
-
   return (
     <>
-      <GlobalContext.Provider value={{ data, setData }}>
+      <GlobalProvider>
         <DefaultLayout>
           <AppMain />
         </DefaultLayout>
-      </GlobalContext.Provider>
+      </GlobalProvider>
     </>
   )
 }

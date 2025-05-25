@@ -6,9 +6,8 @@ export default function GlobalProvider({ children }) {
     const [error, setError] = useState("");
     const [selectedOption, setSelectedOption] = useState("Repositories");
     const [loading, setLoading] = useState(false);
-    const [searchText, setSearchText] = useState("");
 
-    function fetchData() {
+    function fetchData(searchText) {
         const endpoint =
             selectedOption === "Users"
                 ? `https://api.github.com/search/users?q=${searchText}`
@@ -46,6 +45,9 @@ export default function GlobalProvider({ children }) {
                 .catch((error) => console.error("Errore:", error));
         }
 
+        console.log(data);
+
+
     }
 
     return (
@@ -57,9 +59,7 @@ export default function GlobalProvider({ children }) {
                 error,
                 selectedOption,
                 setSelectedOption,
-                fetchData,
-                searchText,
-                setSearchText
+                fetchData
             }}
         >
             {children}

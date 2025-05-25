@@ -1,14 +1,14 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import GlobalContext from "../contexts/GlobalContext";
 
 export default function SearchBar() {
-    const [searchText, setSearchText] = useState("");
-    const [selectedOption, setSelectedOption] = useState("Repositories");
     const options = ["Repositories", "Users"];
-    const [error, setError] = useState("");
+    const [searchText, setSearchText] = useState("");
+    const { fetchData, selectedOption, setSelectedOption } = useContext(GlobalContext);
 
     function handleFormSubmit(e) {
         e.preventDefault();
-        fetchData();
+        fetchData(searchText);
     }
 
     return (
@@ -38,8 +38,6 @@ export default function SearchBar() {
                     <button type="submit">Cerca</button>
 
                 </form>
-
-                <div>{error}</div>
 
             </div>
         </>

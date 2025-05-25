@@ -6,12 +6,13 @@ import AppLoader from "../loaders/AppLoader";
 
 export default function AppMain() {
 
-    const { data, setData } = useContext(GlobalContext);
+    const { data, error, selectedOption, loading } = useContext(GlobalContext);
 
     return (
         <>
+            <div>{error}</div>
 
-            {loading ? <AppLoader /> :
+            {loading && loading ? <AppLoader /> :
                 <div className="container">
                     <div className="row">
                         <div className="col">

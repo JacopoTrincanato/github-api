@@ -15,7 +15,7 @@ export default function SearchBar() {
         <>
             <div>
 
-                <form onSubmit={handleFormSubmit} className="d-flex flex-column flex-md-row gap-2 align-items-center mb-4">
+                <form onSubmit={handleFormSubmit} className="d-flex align-items-center mb-4">
                     <input
                         type="search"
                         className="form-control"
@@ -35,7 +35,7 @@ export default function SearchBar() {
                         ))}
                     </select>
 
-                    <button type="submit" className="btn btn-primary">Cerca</button>
+                    <button type="submit" className="btn btn-light">Cerca</button>
                 </form>
 
             </div>

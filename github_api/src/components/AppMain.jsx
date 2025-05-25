@@ -5,14 +5,15 @@ import GlobalContext from "../contexts/GlobalContext";
 import AppLoader from "../loaders/AppLoader";
 
 export default function AppMain() {
-
     const { data, error, selectedOption, loading } = useContext(GlobalContext);
 
     return (
         <>
-            <div>{error}</div>
+            {error && <div>{error}</div>}
 
-            {loading && loading ? <AppLoader /> :
+            {loading ? (
+                <AppLoader />
+            ) : (
                 <div className="container">
                     <div className="row">
                         <div className="col">
@@ -21,8 +22,8 @@ export default function AppMain() {
                                 : <RepositoryCard data={data} />}
                         </div>
                     </div>
-
-                </div>}
+                </div>
+            )}
         </>
-    )
+    );
 }

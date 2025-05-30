@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import GlobalContext from "../contexts/GlobalContext";
 import useDebounce from "../custom_hooks/UseDebounce";
-//import useDebounce from "../coustom_hooks/useDebounce";
 
 export default function SearchBar() {
     const options = ["Repositories", "Users"];
@@ -11,7 +10,7 @@ export default function SearchBar() {
 
     useEffect(() => {
         fetchData(debouncedSearch)
-    }, [debouncedSearch])
+    }, [debouncedSearch, selectedOption])
 
     function handleFormSubmit(e) {
         e.preventDefault();

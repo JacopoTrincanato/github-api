@@ -11,8 +11,5 @@ export default function useDebounce(value, delay = 700) {
         return () => clearTimeout(debounce);
     }, [value])
 
-    console.log(debouncedValue);
-
-
     return debouncedValue
 }

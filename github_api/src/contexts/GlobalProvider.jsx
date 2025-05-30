@@ -17,7 +17,7 @@ export default function GlobalProvider({ children }) {
 
         //validazione minimale
         if (searchText.length < 3) {
-            setError("Devi digitare almeno tre caratteri per effettuare la ricerca")
+            setError("Devi digitare almeno tre caratteri per effettuare la ricerca");
             setLoading(false)
         } else {
             fetch(endpoint, {
@@ -30,15 +30,15 @@ export default function GlobalProvider({ children }) {
                 .then((response) => response.json())
                 .then((response) => {
 
-
+                    setLoading(true)
                     if (response.items.length == 0) {
-                        setError("Nessun risultato")
-                        setData([])
-                        setLoading(false)
+                        setError("Nessun risultato");
+                        setData([]);
+                        setLoading(false);
                     } else {
-                        setData(response.items)
+                        setData(response.items);
                         setError("");
-                        setLoading(false)
+                        setLoading(false);
                     }
 
                 })

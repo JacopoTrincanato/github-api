@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import GlobalContext from "../contexts/GlobalContext";
 import UseDebounce from "../coustom_hooks/UseDebounce";
 
@@ -10,8 +10,10 @@ export default function SearchBar() {
 
     function handleFormSubmit(e) {
         e.preventDefault();
-        fetchData(searchText);
+        fetchData(debouncedSearch);
     }
+
+    useEffect(handleFormSubmit, [])
 
     return (
         <>

@@ -3,6 +3,8 @@ import GlobalProvider from "./contexts/GlobalProvider";
 import DefaultLayout from "./layouts/DefaultLayout";
 import AppMain from "./components/AppMain";
 
+//npm run dev --host: posso vederlo da telefono se è connesso alla stessa rete wifi del telefono
+
 function App() {
   return (
     <GlobalProvider>
